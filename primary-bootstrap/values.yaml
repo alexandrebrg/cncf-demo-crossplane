@@ -1,0 +1,17 @@
+argocd:
+  server:
+    insecure: true
+    ingress:
+      enabled: true
+      hostname: argo.local
+      ingressClassName: nginx
+
+  config:
+    secret:
+      argocdServerAdminPassword: admin
+
+crossplane:
+  provider:
+    packages: [
+      "xpkg.upbound.io/upbound/provider-gcp-container:v0.38.1"
+    ]

@@ -1,0 +1,16 @@
+apiVersion: v2
+name: primary
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
+dependencies:
+  - name: argo-cd
+    alias: argocd
+    version: 5.2.1
+    repository: https://charts.bitnami.com/bitnami
+  # Why crossplane in dependencies instead of an Application in templates ?
+  # -> ArgoCD doesn't properly clean CRDs, ClusterRoles sometimes :)
+  - name: crossplane
+    version: 1.14.0
+    repository: https://charts.crossplane.io/stable

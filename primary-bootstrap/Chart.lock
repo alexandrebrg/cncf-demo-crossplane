@@ -1,0 +1,9 @@
+dependencies:
+- name: argo-cd
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.2.1
+- name: crossplane
+  repository: https://charts.crossplane.io/stable
+  version: 1.14.0
+digest: sha256:3d0ab86c6f7aaeee9a26477863223a454ff74804ff1af2648eef03577877b032
+generated: "2023-11-06T22:25:26.828869+01:00"
