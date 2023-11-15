@@ -1,0 +1,75 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: workercluster.protocole.dev
+spec:
+  writeConnectionSecretsToNamespace: default
+  compositeTypeRef:
+    apiVersion: protocole.dev/v1alpha1
+    kind: WorkerCluster
+  resources:
+    - base:
+        apiVersion: container.gcp.upbound.io/v1beta1
+        kind: Cluster
+        spec:
+          # Ref: https://github.com/crossplane/crossplane/blob/master/design/design-doc-external-secret-stores.md
+          publishConnectionDetailsTo:
+            configRef:
+              name: default
+              policy:
+                resolution: Required
+                resolve: Always
+            metadata:
+              type: Opaque
+          forProvider:
+            location: europe-north1
+            initialNodeCount: 1
+            removeDefaultNodePool: true
+            masterAuth: [
+              clientCertificateConfig: [
+                issueClientCertificate: true
+              ]
+            ]
+
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "spec.publishConnectionDetailsTo.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-gkecluster"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: ProviderConfig
+        spec:
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: default
+              key: kubeconfig
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+        # This ProviderConfig uses the above GKECluster's connection secret as
+        # its credentials secret.
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: spec.credentials.secretRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-gkecluster"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations: 
+            crossplane.io/external-name: guessbook
+        spec:
+          forProvider:
+            chart:
+              name: argo-cd
+              repository: https://charts.bitnami.com/bitnami/
+              version: 5.2.3
+            namespace: argocd

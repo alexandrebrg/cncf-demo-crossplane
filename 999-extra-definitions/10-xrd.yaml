@@ -1,0 +1,24 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata: 
+  name: workerclusters.protocole.dev
+spec:
+  connectionSecretKeys:
+    - kubeconfig
+  group: protocole.dev
+  names:
+    kind: WorkerCluster
+    plural: workerclusters
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              location:
+                type: string
+    served: true
+    referenceable: true

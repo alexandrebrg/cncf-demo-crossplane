@@ -1,0 +1,6 @@
+apiVersion: protocole.dev/v1alpha1
+kind: WorkerCluster
+metadata:
+  name: worker-1
+spec:
+  location: europe-north1

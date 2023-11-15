@@ -1,13 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rik-bootstrap
+  name: morty-podtato
+  namespace: mcp
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: default
-    server: https://kubernetes.default.svc
+    namespace: argocd
+    name: morty
   project: default
   source:
     path: 05-workers-bootstrap

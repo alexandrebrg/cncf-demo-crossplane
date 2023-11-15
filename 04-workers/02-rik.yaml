@@ -21,5 +21,8 @@ spec:
         issueClientCertificate: true
       ]
     ]
-    nodeConfig:
-      diskSizeGb: 50
+    nodeConfig: [
+      {
+        diskSizeGb: 50
+      }
+    ]

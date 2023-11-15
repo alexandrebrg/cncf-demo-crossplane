@@ -1,21 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: podtato
+  name: rik-podtato
   namespace: mcp
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: default
-    server: https://kubernetes.default.svc
+    namespace: argocd
+    name: rik
   project: default
   source:
-    path: delivery/kubectl
-    repoURL: https://github.com/cncf/podtato-head
+    path: 05-workers-bootstrap
+    repoURL: https://github.com/AlexandreBrg/cncf-demo-crossplane
     targetRevision: HEAD
   syncPolicy:
     automated:
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
