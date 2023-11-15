@@ -1,0 +1,16 @@
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
+metadata:
+  name: enable-ess
+  annotations:
+    "helm.sh/hook": "post-install, post-upgrade"
+spec:
+  deploymentTemplate:
+    spec:
+      selector: {}
+      template:
+        spec:
+          containers:
+            - name: package-runtime
+              args:
+                - --enable-external-secret-stores

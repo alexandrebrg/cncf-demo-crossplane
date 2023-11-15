@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mcp-apps
+  namespace: mcp
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: 02-mcp-apps
+    repoURL: https://github.com/AlexandreBrg/cncf-demo-crossplane
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true

@@ -1,0 +1,25 @@
+apiVersion: container.gcp.upbound.io/v1beta1
+kind: Cluster
+metadata:
+  name: morty
+spec:
+  # Ref: https://github.com/crossplane/crossplane/blob/master/design/design-doc-external-secret-stores.md
+  publishConnectionDetailsTo:
+    configRef:
+      name: default
+      policy:
+        resolution: Required
+        resolve: Always
+    metadata:
+      type: Opaque
+    name: morty-kubeconfig
+  forProvider:
+    location: europe-north1
+    initialNodeCount: 1
+    masterAuth: [
+      clientCertificateConfig: [
+        issueClientCertificate: true
+      ]
+    ]
+    nodeConfig:
+      diskSizeGb: 50

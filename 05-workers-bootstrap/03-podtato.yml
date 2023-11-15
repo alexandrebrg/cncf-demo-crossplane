@@ -1,7 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: config
+  name: podtato
+  namespace: mcp
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
@@ -10,9 +11,11 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: primary-config
-    repoURL: https://github.com/AlexandreBrg/cncf-demo-crossplane
+    path: delivery/kubectl
+    repoURL: https://github.com/cncf/podtato-head
     targetRevision: HEAD
   syncPolicy:
     automated:
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

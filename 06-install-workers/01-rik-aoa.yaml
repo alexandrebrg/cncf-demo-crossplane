@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rik-bootstrap
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: 05-workers-bootstrap
+    repoURL: https://github.com/AlexandreBrg/cncf-demo-crossplane
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true
